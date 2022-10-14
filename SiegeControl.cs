@@ -45,8 +45,8 @@ namespace FixSiegeAI
 			{
 				if (sw.Side == Mission.Current.PlayerTeam.Side)
 				{
-					bool isUsing = formation.IsUsingMachine(sw);
-					if (formation.MovementOrder.OrderType == OrderType.StandYourGround & isUsing)
+					bool isUsing = Main.IsUsingMachine(formation, sw);
+					if (formation.GetReadonlyMovementOrderReference().OrderType == OrderType.StandYourGround & isUsing)
 					{
 						sw.ForcedUse = false;
 						formation.StopUsingMachine(sw, true);

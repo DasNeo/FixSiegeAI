@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using HarmonyLib;
 using TaleWorlds.Core;
+using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 
 namespace FixSiegeAI
@@ -10,8 +12,15 @@ namespace FixSiegeAI
 	// Main class
 	public class Main : MBSubModuleBase
 	{
-		// This runs at game main menu
-		protected override void OnBeforeInitialModuleScreenSetAsRoot()
+        public static bool IsUsingMachine(Formation f, UsableMachine m)
+        {
+            if (f.GetUsedMachines().FirstOrDefault(r => r == m) == null)
+                return false;
+            return true;
+        }
+
+        // This runs at game main menu
+        protected override void OnBeforeInitialModuleScreenSetAsRoot()
 		{
 			try { File.Delete(@"C:\Users\Shadow\Desktop\FixSiegeAI_Log.txt"); } catch { };
 			try
@@ -21,7 +30,10 @@ namespace FixSiegeAI
 				harmony.PatchAll();
 				Main.Log("Harmony patches loaded.");
 			}
-			catch (Exception e) { Main.Log(e.Message); };
+			catch (Exception e) 
+			{
+				Main.Log(e.Message); 
+			};
 		}
 
 		// This runs when module is loaded.
@@ -31,7 +43,7 @@ namespace FixSiegeAI
 		}
 
 		// Stops ai from reticking if the original first order is not followed through, DOES NOT prevent first AI order
-		public override void OnMissionBehaviourInitialize(Mission mission)
+		public override void OnMissionBehaviorInitialize(Mission mission)
 		{
 			Main.Log(Environment.NewLine + "Mission loaded. ");
 			foreach (SiegeWeapon sw in Mission.Current.ActiveMissionObjects.FindAllWithType<SiegeWeapon>())

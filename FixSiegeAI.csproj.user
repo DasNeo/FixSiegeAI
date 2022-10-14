@@ -3,4 +3,16 @@
   <PropertyGroup>
     <ProjectView>ShowAllFiles</ProjectView>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <StartArguments>/singleplayer _MODULES_%2aBannerlord.Harmony%2aNative%2aSandBox%2aSandBoxCore%2aStoryMode%2aCustomBattle%2aFixSiegeAI</StartArguments>
+    <StartWorkingDirectory>C:\Program Files %28x86%29\Steam\steamapps\common\Mount &amp; Blade II Bannerlord\bin\Win64_Shipping_Client\</StartWorkingDirectory>
+    <StartAction>Program</StartAction>
+    <StartProgram>C:\Program Files %28x86%29\Steam\steamapps\common\Mount &amp; Blade II Bannerlord\bin\Win64_Shipping_Client\Bannerlord.exe</StartProgram>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <StartProgram>C:\Program Files %28x86%29\Steam\steamapps\common\Mount &amp; Blade II Bannerlord\bin\Win64_Shipping_Client\Bannerlord.exe</StartProgram>
+    <StartWorkingDirectory>C:\Program Files %28x86%29\Steam\steamapps\common\Mount &amp; Blade II Bannerlord\bin\Win64_Shipping_Client\</StartWorkingDirectory>
+    <StartArguments>/singleplayer _MODULES_%2aBannerlord.Harmony%2aNative%2aSandBox%2aSandBoxCore%2aStoryMode%2aCustomBattle%2aFixSiegeAI</StartArguments>
+    <StartAction>Program</StartAction>
+  </PropertyGroup>
 </Project>

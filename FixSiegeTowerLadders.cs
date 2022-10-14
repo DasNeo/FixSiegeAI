@@ -111,13 +111,13 @@ namespace FixSiegeAI
 			Traverse.Create(__instance).Field("_queueBeginDistance").SetValue(3f); // 2 default
 			Traverse.Create(__instance).Field("_agentSpacing").SetValue(1f); // .8 st def
 			Traverse.Create(__instance).Field("_arcAngle").SetValue(3f); // st 0.7853982f
-			foreach (var mc in Traverse.Create(__instance).Field("_queuedAgents").GetValue<List<Agent>>()
+			/*foreach (var mc in Traverse.Create(__instance).Field("_queuedAgents").GetValue<List<Agent>>()
 						.Select(a => a?.GetComponent<MoraleAgentComponent>())
 						.Where(c => c != null))
 			{
 				mc.Morale = 100;
 				mc.StopRetreating();
-			}
+			}*/
 			return true;
 			//__state = true;
 			//if (DateTime.Now.Millisecond % 500f != 0) { __state = false; return true; }

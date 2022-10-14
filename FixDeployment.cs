@@ -2,11 +2,12 @@
 using HarmonyLib;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.ViewModelCollection;
+using TaleWorlds.MountAndBlade.ViewModelCollection.Order;
 
 namespace FixSiegeAI
 {
 	// Prevent AI splitting formations at onset of deployment
-	[HarmonyPatch(typeof(MissionOrderVM), "DeployFormationsOfPlayer")]
+	[HarmonyPatch(typeof(MissionOrderDeploymentControllerVM), "DeployFormationsOfPlayer")]
 	public static class Patch_DeployFormationsOfPlayer
 	{
 		private static bool Prefix()
@@ -16,21 +17,23 @@ namespace FixSiegeAI
 			{
 				if (Main.IsPIC(formation))
 				{
-					formation.IsAIControlled = false;
+					formation.ReleaseFormationFromAI();
 					Main.Log("AI control disabled.");
 				}
 			}
-			Mission.Current.AllowAiTicking = true;
+            Mission.Current.AllowAiTicking = true;
 			Mission.Current.ForceTickOccasionally = true;
 			Mission.Current.PlayerTeam.ResetTactic();
-			bool isTeleportingAgents = Mission.Current.IsTeleportingAgents;
+            
+            bool isTeleportingAgents = Mission.Current.IsTeleportingAgents;
 			Mission.Current.IsTeleportingAgents = true;
 			Mission.Current.PlayerTeam.Tick(0f);
 			Mission.Current.IsTeleportingAgents = isTeleportingAgents;
-			Mission.Current.AllowAiTicking = false;
-			Mission.Current.ForceTickOccasionally = false;
+            
+            Mission.Current.AllowAiTicking = false;
+            Mission.Current.ForceTickOccasionally = false;
 			Main.Log("AI reassigning formation locations blocked.");
-			return false;
+			return true;
 		}
 	}
 
@@ -47,7 +50,7 @@ namespace FixSiegeAI
 				{
 					if (Main.IsPIC(formation))
 					{
-						formation.IsAIControlled = false;
+						formation.ReleaseFormationFromAI();
 						Main.Log("AI control disabled again.");
 					}
 				}

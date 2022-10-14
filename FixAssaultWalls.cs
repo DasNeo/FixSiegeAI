@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using System.Linq;
 using TaleWorlds.MountAndBlade;
 
 namespace FixSiegeAI
@@ -28,7 +29,8 @@ namespace FixSiegeAI
 				{
 					foreach (Formation f in Mission.Current.PlayerTeam.Formations)
 					{
-						if (f.IsUsingMachine(mo as BatteringRam) && !aic.InnerGate.IsDestroyed && Main.IsPIC(f) && !f.IsAIControlled)
+						var bat = f.GetUsedMachines().FirstOrDefault(r => r is BatteringRam);
+						if ((bat != null) && !aic.InnerGate.IsDestroyed && Main.IsPIC(f) && !f.IsAIControlled)
 						{
 							if (Mission.Current.PlayerTeam.IsAttacker) { Main.Log("Sending detachment to attack inner gate!", true); }
 							Traverse.Create(f).Method("FormAttackEntityDetachment", aic.InnerGate.GameEntity).GetValue();
@@ -42,7 +44,7 @@ namespace FixSiegeAI
 	}
 
 	// Still trying to debug charging
-	[HarmonyPatch(typeof(OrderController), "GetChargeOrderSubstituteForSiege")]
+	//[HarmonyPatch(typeof(OrderController), "GetChargeOrderSubstituteForSiege")]
 	public static class Patch_GetChargeOrderSubstituteForSiege
 	{
 		public static bool Prefix(OrderController __instance, ref MovementOrder __result, Formation formation)
